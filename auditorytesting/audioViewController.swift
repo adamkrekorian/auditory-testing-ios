@@ -120,12 +120,27 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     @IBAction func recordSound(_ sender: Any) {
         let audioFilename: String = soundNameInput.text!
-        let audioFilepath = getDocumentsDirectory().appendingPathComponent("\(audioFilename).m4a")
-        if audioRecorder == nil {
-                startRecording(sender, filename: audioFilename, filepath: audioFilepath)
-            } else {
-                finishRecording(success: true, sender: sender, filename: audioFilename, filepath: audioFilepath)
-            }
+        
+        if audioFilename == "" {
+            let alert = UIAlertController(title: "No Recording Name", message: "Please name your recording.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
+
+            self.present(alert, animated: true)
+        }
+        else if soundNames.contains(audioFilename) {
+            let alert = UIAlertController(title: "Please rename sound", message: "You cannot have duplicate sound names", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
+
+            self.present(alert, animated: true)
+        }
+        else {
+            let audioFilepath = getDocumentsDirectory().appendingPathComponent("\(audioFilename).m4a")
+            if audioRecorder == nil {
+                    startRecording(sender, filename: audioFilename, filepath: audioFilepath)
+                } else {
+                    finishRecording(success: true, sender: sender, filename: audioFilename, filepath: audioFilepath)
+                }
+        }
     }
 
     
@@ -155,7 +170,7 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
             print("failed to record")
         }
         
-        soundNameInput.text = "recording"
+        soundNameInput.text = ""
         // Do any additional setup after loading the view.
     }
     
