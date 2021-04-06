@@ -71,9 +71,11 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     @IBAction func deleteSound(_ sender: Any) {
         let selectRow = tableView.indexPathForSelectedRow?.row
-        soundNames.remove(at: selectRow!)
-        sounds.remove(at: selectRow!)
-        self.tableView.reloadData()
+        if selectRow != nil {
+            soundNames.remove(at: selectRow!)
+            sounds.remove(at: selectRow!)
+            self.tableView.reloadData()
+        }
     }
     
     func startRecording(_ sender: Any, filename: String, filepath: URL) {
