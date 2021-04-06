@@ -10,6 +10,7 @@ import UIKit
 import AVFoundation
 
 var player:AVAudioPlayer?
+let NUMBER_OF_PRELOADED_SOUNDS = 3
 
 class audioViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, AVAudioRecorderDelegate {
     
@@ -20,6 +21,7 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
     var soundNames: [String] = ["bell", "clap", "horn"]
     var sounds: [String] = ["sounds/bell.mp3", "sounds/clap.wav", "sounds/horn.wav"]
     
+        
     
     func playSound(panVal: Float) {
         let selectRow = tableView.indexPathForSelectedRow?.row
@@ -60,18 +62,17 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
         playSound(panVal:-1.0)
     }
     
+    
     @IBAction func playRight(_ sender: UIButton) {
         playSound(panVal:1.0)
     }
 
-    func playSoundseq(panVal: Float) {
-        playSound(panVal: panVal)
-    }
+  
     
     
     @IBAction func deleteSound(_ sender: Any) {
         let selectRow = tableView.indexPathForSelectedRow?.row
-        if selectRow != nil {
+        if selectRow != nil && selectRow! >= NUMBER_OF_PRELOADED_SOUNDS {
             soundNames.remove(at: selectRow!)
             sounds.remove(at: selectRow!)
             self.tableView.reloadData()
@@ -127,7 +128,7 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
 
             self.present(alert, animated: true)
         }
-        else if soundNames.contains(audioFilename) {
+        else if soundNames.contains(audioFilename)  {
             let alert = UIAlertController(title: "Please rename sound", message: "You cannot have duplicate sound names", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
 
@@ -151,6 +152,7 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        self.navigationController?.isNavigationBarHidden = true
         
         recordingSession = AVAudioSession.sharedInstance()
         

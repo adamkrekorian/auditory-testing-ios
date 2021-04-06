@@ -7,28 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		59774D2F261CC1C800E434BF /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 59774D2E261CC1C800E434BF /* sounds */; };
+		59774D31261CF6E600E434BF /* duke_health_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 59774D30261CF6E600E434BF /* duke_health_logo.png */; };
 		69D7B5022616860E00115794 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D7B5012616860E00115794 /* AppDelegate.swift */; };
 		69D7B5042616860E00115794 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D7B5032616860E00115794 /* SceneDelegate.swift */; };
-		69D7B5062616860E00115794 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D7B5052616860E00115794 /* ViewController.swift */; };
+		69D7B5062616860E00115794 /* InstructionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D7B5052616860E00115794 /* InstructionController.swift */; };
 		69D7B5092616860E00115794 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 69D7B5072616860E00115794 /* Main.storyboard */; };
 		69D7B50B2616860F00115794 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 69D7B50A2616860F00115794 /* Assets.xcassets */; };
 		69D7B50E2616860F00115794 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 69D7B50C2616860F00115794 /* LaunchScreen.storyboard */; };
 		69D7B516261687D500115794 /* audioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D7B515261687D500115794 /* audioViewController.swift */; };
-		69D7B5182616897A00115794 /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 69D7B5172616897A00115794 /* sounds */; };
 		69D7B51A261696FE00115794 /* customSoundCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D7B519261696FE00115794 /* customSoundCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		59774D2E261CC1C800E434BF /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; name = sounds; path = "../../../Downloads/swift_app 2/auditorytesting/auditorytesting/sounds"; sourceTree = "<group>"; };
+		59774D30261CF6E600E434BF /* duke_health_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = duke_health_logo.png; sourceTree = "<group>"; };
 		69D7B4FE2616860E00115794 /* auditorytesting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = auditorytesting.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		69D7B5012616860E00115794 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		69D7B5032616860E00115794 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		69D7B5052616860E00115794 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		69D7B5052616860E00115794 /* InstructionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionController.swift; sourceTree = "<group>"; };
 		69D7B5082616860E00115794 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		69D7B50A2616860F00115794 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		69D7B50D2616860F00115794 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		69D7B50F2616860F00115794 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		69D7B515261687D500115794 /* audioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = audioViewController.swift; sourceTree = "<group>"; };
-		69D7B5172616897A00115794 /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; name = sounds; path = ../../../../sounds; sourceTree = "<group>"; };
 		69D7B519261696FE00115794 /* customSoundCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = customSoundCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -62,15 +64,16 @@
 		69D7B5002616860E00115794 /* auditorytesting */ = {
 			isa = PBXGroup;
 			children = (
+				59774D30261CF6E600E434BF /* duke_health_logo.png */,
 				69D7B5012616860E00115794 /* AppDelegate.swift */,
 				69D7B5032616860E00115794 /* SceneDelegate.swift */,
-				69D7B5052616860E00115794 /* ViewController.swift */,
+				69D7B5052616860E00115794 /* InstructionController.swift */,
 				69D7B5072616860E00115794 /* Main.storyboard */,
 				69D7B519261696FE00115794 /* customSoundCell.swift */,
 				69D7B515261687D500115794 /* audioViewController.swift */,
 				69D7B50A2616860F00115794 /* Assets.xcassets */,
 				69D7B50C2616860F00115794 /* LaunchScreen.storyboard */,
-				69D7B5172616897A00115794 /* sounds */,
+				59774D2E261CC1C800E434BF /* sounds */,
 				69D7B50F2616860F00115794 /* Info.plist */,
 			);
 			path = auditorytesting;
@@ -134,10 +137,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				59774D2F261CC1C800E434BF /* sounds in Resources */,
 				69D7B50E2616860F00115794 /* LaunchScreen.storyboard in Resources */,
 				69D7B50B2616860F00115794 /* Assets.xcassets in Resources */,
-				69D7B5182616897A00115794 /* sounds in Resources */,
 				69D7B5092616860E00115794 /* Main.storyboard in Resources */,
+				59774D31261CF6E600E434BF /* duke_health_logo.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -149,7 +153,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				69D7B51A261696FE00115794 /* customSoundCell.swift in Sources */,
-				69D7B5062616860E00115794 /* ViewController.swift in Sources */,
+				69D7B5062616860E00115794 /* InstructionController.swift in Sources */,
 				69D7B516261687D500115794 /* audioViewController.swift in Sources */,
 				69D7B5022616860E00115794 /* AppDelegate.swift in Sources */,
 				69D7B5042616860E00115794 /* SceneDelegate.swift in Sources */,
