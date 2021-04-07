@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		59774D2F261CC1C800E434BF /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 59774D2E261CC1C800E434BF /* sounds */; };
 		59774D31261CF6E600E434BF /* duke_health_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 59774D30261CF6E600E434BF /* duke_health_logo.png */; };
+		6932BC5F261E0660006D51F8 /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 6932BC5E261E0660006D51F8 /* sounds */; };
 		69D7B5022616860E00115794 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D7B5012616860E00115794 /* AppDelegate.swift */; };
 		69D7B5042616860E00115794 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D7B5032616860E00115794 /* SceneDelegate.swift */; };
 		69D7B5062616860E00115794 /* InstructionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D7B5052616860E00115794 /* InstructionController.swift */; };
@@ -20,8 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		59774D2E261CC1C800E434BF /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; name = sounds; path = "../../../Downloads/swift_app 2/auditorytesting/auditorytesting/sounds"; sourceTree = "<group>"; };
 		59774D30261CF6E600E434BF /* duke_health_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = duke_health_logo.png; sourceTree = "<group>"; };
+		6932BC5E261E0660006D51F8 /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
 		69D7B4FE2616860E00115794 /* auditorytesting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = auditorytesting.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		69D7B5012616860E00115794 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		69D7B5032616860E00115794 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -73,7 +73,7 @@
 				69D7B515261687D500115794 /* audioViewController.swift */,
 				69D7B50A2616860F00115794 /* Assets.xcassets */,
 				69D7B50C2616860F00115794 /* LaunchScreen.storyboard */,
-				59774D2E261CC1C800E434BF /* sounds */,
+				6932BC5E261E0660006D51F8 /* sounds */,
 				69D7B50F2616860F00115794 /* Info.plist */,
 			);
 			path = auditorytesting;
@@ -137,7 +137,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				59774D2F261CC1C800E434BF /* sounds in Resources */,
+				6932BC5F261E0660006D51F8 /* sounds in Resources */,
 				69D7B50E2616860F00115794 /* LaunchScreen.storyboard in Resources */,
 				69D7B50B2616860F00115794 /* Assets.xcassets in Resources */,
 				69D7B5092616860E00115794 /* Main.storyboard in Resources */,
