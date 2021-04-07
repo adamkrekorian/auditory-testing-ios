@@ -58,6 +58,16 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     
+    @IBAction func playSequence(_ sender: UIButton) {
+        
+        playSound(panVal:-1.0) //left
+        sleep(10)
+        playSound(panVal:1.0) //right
+        sleep(10)
+        playSound(panVal:-1.0) //left
+        sleep(10)
+        playSound(panVal:1.0) //right
+    }
     @IBAction func playLeft(_ sender: UIButton) {
         playSound(panVal:-1.0)
     }
