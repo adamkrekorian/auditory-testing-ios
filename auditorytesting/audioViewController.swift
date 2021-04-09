@@ -198,14 +198,25 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let selectRow = tableView.indexPathForSelectedRow?.row ?? nil;
+        let controller = segue.destination as! sequenceViewController;
+
+        if (selectRow != nil) {
+            controller.currentInd = selectRow!;
+            controller.currentSoundName =  soundNames[selectRow!];
+            controller.currentSoundPath =  sounds[selectRow!];
+        } else {
+           let alert = UIAlertController(title: "No Sound Selected", message: "Please select a sound to create a sequence", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
+
+            self.present(alert, animated: true)
+        }
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
     }
-    */
 
 }

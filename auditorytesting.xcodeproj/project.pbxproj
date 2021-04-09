@@ -17,6 +17,7 @@
 		69D7B50E2616860F00115794 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 69D7B50C2616860F00115794 /* LaunchScreen.storyboard */; };
 		69D7B516261687D500115794 /* audioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D7B515261687D500115794 /* audioViewController.swift */; };
 		69D7B51A261696FE00115794 /* customSoundCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D7B519261696FE00115794 /* customSoundCell.swift */; };
+		69E240CD261FCF73003FF455 /* sequenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69E240CC261FCF73003FF455 /* sequenceViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		69D7B50F2616860F00115794 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		69D7B515261687D500115794 /* audioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = audioViewController.swift; sourceTree = "<group>"; };
 		69D7B519261696FE00115794 /* customSoundCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = customSoundCell.swift; sourceTree = "<group>"; };
+		69E240CC261FCF73003FF455 /* sequenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sequenceViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 				69D7B5072616860E00115794 /* Main.storyboard */,
 				69D7B519261696FE00115794 /* customSoundCell.swift */,
 				69D7B515261687D500115794 /* audioViewController.swift */,
+				69E240CC261FCF73003FF455 /* sequenceViewController.swift */,
 				69D7B50A2616860F00115794 /* Assets.xcassets */,
 				69D7B50C2616860F00115794 /* LaunchScreen.storyboard */,
 				6932BC5E261E0660006D51F8 /* sounds */,
@@ -153,6 +156,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				69D7B51A261696FE00115794 /* customSoundCell.swift in Sources */,
+				69E240CD261FCF73003FF455 /* sequenceViewController.swift in Sources */,
 				69D7B5062616860E00115794 /* InstructionController.swift in Sources */,
 				69D7B516261687D500115794 /* audioViewController.swift in Sources */,
 				69D7B5022616860E00115794 /* AppDelegate.swift in Sources */,
