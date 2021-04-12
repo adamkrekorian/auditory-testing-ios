@@ -23,7 +23,7 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
     
         
     
-    func playSound(panVal: Float) {
+    func playSoundRight(_ sender: Any, panVal: Float) {
         let selectRow = tableView.indexPathForSelectedRow?.row
         
         if (tableView.indexPathForSelectedRow == nil){
@@ -46,10 +46,57 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
             player = try AVAudioPlayer(contentsOf: url!)
             player!.pan = panVal
             player!.play()
+            let button = sender as! UIButton
+            button.setTitle("Tap to Stop", for: .normal)
             
         } catch let error as NSError {
             print("error: \(error.localizedDescription)")
         }
+    }
+    
+    func playSoundLeft(_ sender: Any, panVal: Float) {
+        let selectRow = tableView.indexPathForSelectedRow?.row
+        
+        if (tableView.indexPathForSelectedRow == nil){
+            return
+        }
+        
+        let tempPath = "\(sounds[selectRow!])"
+        
+        let url: URL?
+        if (selectRow! > 2) {
+            url = URL(string: tempPath)
+        } else {
+            url = Bundle.main.url(forResource: tempPath, withExtension: nil)
+        }
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
+            try AVAudioSession.sharedInstance().setActive(true)
+
+            player = try AVAudioPlayer(contentsOf: url!)
+            player!.pan = panVal
+            player!.play()
+            let button = sender as! UIButton
+            button.setTitle("Tap to Stop", for: .normal)
+            
+        } catch let error as NSError {
+            print("error: \(error.localizedDescription)")
+        }
+    }
+    
+    func stopSoundRight(_ sender: Any){
+        player!.stop()
+        player = nil
+        let button = sender as! UIButton
+        button.setTitle("Play Right", for: .normal)
+    }
+    
+    func stopSoundLeft(_ sender: Any){
+        player!.stop()
+        player = nil
+        let button = sender as! UIButton
+        button.setTitle("Play Left", for: .normal)
     }
     
     func getDocumentsDirectory() -> URL {
@@ -59,13 +106,20 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
     
 
     @IBAction func playLeft(_ sender: UIButton) {
-        playSound(panVal:-1.0)
-        
+        if player == nil {
+            playSoundLeft(sender, panVal:-1.0)
+        } else {
+            stopSoundLeft(sender)
+        }
     }
     
     
     @IBAction func playRight(_ sender: UIButton) {
-        playSound(panVal:1.0)
+        if player == nil {
+            playSoundRight(sender, panVal:1.0)
+        } else {
+            stopSoundRight(sender)
+        }
     }
 
   
