@@ -14,16 +14,14 @@ let NUMBER_OF_PRELOADED_SOUNDS = 3
 
 class audioViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, AVAudioRecorderDelegate {
     
-    
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
     
     var soundNames: [String] = ["bell", "clap", "horn"]
     var sounds: [String] = ["sounds/bell.mp3", "sounds/clap.wav", "sounds/horn.wav"]
     
-        
     
-    func playSoundRight(_ sender: Any, panVal: Float) {
+    func playSound(_ sender: Any, _ panVal: Float) {
         let selectRow = tableView.indexPathForSelectedRow?.row
         
         if (tableView.indexPathForSelectedRow == nil){
@@ -54,49 +52,11 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
     }
     
-    func playSoundLeft(_ sender: Any, panVal: Float) {
-        let selectRow = tableView.indexPathForSelectedRow?.row
-        
-        if (tableView.indexPathForSelectedRow == nil){
-            return
-        }
-        
-        let tempPath = "\(sounds[selectRow!])"
-        
-        let url: URL?
-        if (selectRow! > 2) {
-            url = URL(string: tempPath)
-        } else {
-            url = Bundle.main.url(forResource: tempPath, withExtension: nil)
-        }
-        
-        do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
-            try AVAudioSession.sharedInstance().setActive(true)
-
-            player = try AVAudioPlayer(contentsOf: url!)
-            player!.pan = panVal
-            player!.play()
-            let button = sender as! UIButton
-            button.setTitle("Tap to Stop", for: .normal)
-            
-        } catch let error as NSError {
-            print("error: \(error.localizedDescription)")
-        }
-    }
-    
-    func stopSoundRight(_ sender: Any){
+    func stopSound(_ sender: Any, _ text: String){
         player!.stop()
         player = nil
         let button = sender as! UIButton
-        button.setTitle("Play Right", for: .normal)
-    }
-    
-    func stopSoundLeft(_ sender: Any){
-        player!.stop()
-        player = nil
-        let button = sender as! UIButton
-        button.setTitle("Play Left", for: .normal)
+        button.setTitle(text, for: .normal)
     }
     
     func getDocumentsDirectory() -> URL {
@@ -106,25 +66,25 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
     
 
     @IBAction func playLeft(_ sender: UIButton) {
+        let panVal: Float = -1.0;
         if player == nil {
-            playSoundLeft(sender, panVal:-1.0)
+            playSound(sender, panVal)
         } else {
-            stopSoundLeft(sender)
+            stopSound(sender, "Play Left");
         }
     }
     
     
     @IBAction func playRight(_ sender: UIButton) {
+        let panVal: Float = 1.0;
         if player == nil {
-            playSoundRight(sender, panVal:1.0)
+            playSound(sender, panVal)
         } else {
-            stopSoundRight(sender)
+            stopSound(sender, "Play Right");
         }
     }
 
   
-    
-    
     @IBAction func deleteSound(_ sender: Any) {
         let selectRow = tableView.indexPathForSelectedRow?.row
         if selectRow != nil && selectRow! >= NUMBER_OF_PRELOADED_SOUNDS {
@@ -228,6 +188,8 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
         
         soundNameInput.text = ""
+        
+        
         // Do any additional setup after loading the view.
     }
     
@@ -242,23 +204,34 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
         return cell
     }
     
+    @IBAction func goToSequence(_ sender: UIButton) {
+        self.performSegue(withIdentifier: "segueSequence", sender: self)
+    }
+    
+    @IBAction func goToInstruction(_ sender: UIButton) {
+        self.performSegue(withIdentifier: "segueInstruction", sender: self)
+    }
+    
     
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let selectRow = tableView.indexPathForSelectedRow?.row ?? nil;
-        let controller = segue.destination as! sequenceViewController;
+        
+        if (segue.identifier == "segueSequence") {
+            let selectRow = tableView.indexPathForSelectedRow?.row ?? nil
+            let controller = segue.destination as! sequenceViewController
 
-        if (selectRow != nil) {
-            controller.currentInd = selectRow!;
-            controller.currentSoundName =  soundNames[selectRow!];
-            controller.currentSoundPath =  sounds[selectRow!];
-        } else {
-           let alert = UIAlertController(title: "No Sound Selected", message: "Please select a sound to create a sequence", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
+            if (selectRow != nil) {
+                controller.currentInd = selectRow!
+                controller.currentSoundName =  soundNames[selectRow!]
+                controller.currentSoundPath =  sounds[selectRow!]
+            } else {
+               let alert = UIAlertController(title: "No Sound Selected", message: "Please select a sound to create a sequence", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
 
-            self.present(alert, animated: true)
+                self.present(alert, animated: true)
+            }
         }
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
