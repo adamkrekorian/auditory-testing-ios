@@ -18,7 +18,7 @@ class sequenceViewController: UIViewController {
     var currentInd: Int = 0
     var currentSoundName: String = "No Sound Selected"
     var currentSoundPath: String = "No URL"
-    var durationVal: Float = 15.0
+    var durationVal: Float = 5.0
     var delayVal: UInt32 = 5
     var url: URL?
     
@@ -33,7 +33,7 @@ class sequenceViewController: UIViewController {
     @IBOutlet weak var durationLabel: UILabel!
     @IBAction func durationSliderUpdate(_ sender: UISlider) {
         
-        durationVal = round(30*Float(sender.value))
+        durationVal = round(10*Float(sender.value))
         durationLabel.text = "\(durationVal) seconds"
     }
     
@@ -41,7 +41,7 @@ class sequenceViewController: UIViewController {
     @IBOutlet weak var delaySlider: UISlider!
     @IBOutlet weak var delayLabel: UILabel!
     @IBAction func delaySliderUpdate(_ sender: UISlider) {
-        delayVal = UInt32(round(30*Float(sender.value)))
+        delayVal = UInt32(round(10*Float(sender.value)))
         delayLabel.text = "\(delayVal) seconds"
     }
     
