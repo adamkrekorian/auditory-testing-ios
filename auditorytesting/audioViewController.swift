@@ -10,15 +10,15 @@ import UIKit
 import AVFoundation
 
 var player:AVAudioPlayer?
-let NUMBER_OF_PRELOADED_SOUNDS = 3
+let NUMBER_OF_PRELOADED_SOUNDS = 5
 
 class audioViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, AVAudioRecorderDelegate {
     
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
     
-    var soundNames: [String] = ["bell", "clap", "horn"]
-    var sounds: [String] = ["sounds/bell.mp3", "sounds/clap.wav", "sounds/horn.wav"]
+    var soundNames: [String] = ["Bell Ringing", "Clapping", "Horn"]
+    var sounds: [String] = ["sounds/bell.mp3", "sounds/clap.mp3", "sounds/horn.wav"]
     
     
     func playSound(_ sender: Any, _ panVal: Float) {
@@ -107,7 +107,8 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
             audioRecorder = try AVAudioRecorder(url: filepath, settings: settings)
             audioRecorder.delegate = self
             audioRecorder.record()
-
+            
+            print("File saved at \(filepath)")
             let button = sender as! UIButton
             button.setTitle("Tap to Stop", for: .normal)
         } catch {
@@ -183,8 +184,8 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
                     }
                 }
             }
-        } catch {
-            print("failed to record")
+        } catch let error as NSError {
+            print("error: \(error.localizedDescription)")
         }
         
         soundNameInput.text = ""
