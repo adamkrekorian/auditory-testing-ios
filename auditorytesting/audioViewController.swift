@@ -9,16 +9,36 @@
 import UIKit
 import AVFoundation
 
-var player:AVAudioPlayer?
-let NUMBER_OF_PRELOADED_SOUNDS = 5
-
-class audioViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, AVAudioRecorderDelegate {
+class audioViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, AVAudioPlayerDelegate, AVAudioRecorderDelegate {
+    
+    let NUMBER_OF_PRELOADED_SOUNDS = 5
+    
+    var player:AVAudioPlayer?
     
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
     
     var soundNames: [String] = ["Bell Ringing", "Clapping", "Horn"]
     var sounds: [String] = ["sounds/bell.mp3", "sounds/clap.mp3", "sounds/horn.wav"]
+    
+    @IBOutlet weak var leftButton: UIButton!
+    @IBOutlet weak var rightButton: UIButton!
+    
+    func cancelPlaying() {
+        player!.stop()
+        player = nil
+        if (leftButton.titleLabel?.text == "Tap to Stop") {
+            leftButton.setTitle("Play Left", for: .normal)
+        }
+        if (rightButton.titleLabel?.text == "Tap to Stop") {
+            rightButton.setTitle("Play Right", for: .normal)
+        }
+    }
+    
+    func audioPlayerDidFinishPlaying(_ player_static: AVAudioPlayer, successfully flag: Bool) {
+        if (flag == true) { cancelPlaying() }
+    }
+    
     
     
     func playSound(_ sender: Any, _ panVal: Float) {
@@ -42,6 +62,7 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
             try AVAudioSession.sharedInstance().setActive(true)
 
             player = try AVAudioPlayer(contentsOf: url!)
+            player?.delegate = self
             player!.pan = panVal
             player!.play()
             let button = sender as! UIButton
@@ -52,11 +73,9 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
     }
     
-    func stopSound(_ sender: Any, _ text: String){
+    func stopSound(_ sender: Any){
         player!.stop()
         player = nil
-        let button = sender as! UIButton
-        button.setTitle(text, for: .normal)
     }
     
     func getDocumentsDirectory() -> URL {
@@ -70,17 +89,19 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
         if player == nil {
             playSound(sender, panVal)
         } else {
-            stopSound(sender, "Play Left");
+            stopSound(sender);
+            leftButton.setTitle("Play Left", for: .normal)
         }
     }
     
     
     @IBAction func playRight(_ sender: UIButton) {
         let panVal: Float = 1.0;
-        if player == nil {
+        if player == nil || sender.titleLabel?.text == "Play Right" {
             playSound(sender, panVal)
         } else {
-            stopSound(sender, "Play Right");
+            stopSound(sender)
+            rightButton.setTitle("Play Right", for: .normal)
         }
     }
 
@@ -207,6 +228,9 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     @IBAction func goToSequence(_ sender: UIButton) {
         self.performSegue(withIdentifier: "segueSequence", sender: self)
+        if player != nil {
+            cancelPlaying()
+        }
     }
     
     @IBAction func goToInstruction(_ sender: UIButton) {

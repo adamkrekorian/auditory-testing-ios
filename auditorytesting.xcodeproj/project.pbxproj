@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		59774D31261CF6E600E434BF /* duke_health_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 59774D30261CF6E600E434BF /* duke_health_logo.png */; };
 		6932BC5F261E0660006D51F8 /* sounds in Resources */ = {isa = PBXBuildFile; fileRef = 6932BC5E261E0660006D51F8 /* sounds */; };
+		693C761D262A06B300D59C46 /* blueorb.png in Resources */ = {isa = PBXBuildFile; fileRef = 693C761C262A06B300D59C46 /* blueorb.png */; };
 		69D7B5022616860E00115794 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D7B5012616860E00115794 /* AppDelegate.swift */; };
 		69D7B5042616860E00115794 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D7B5032616860E00115794 /* SceneDelegate.swift */; };
 		69D7B5062616860E00115794 /* InstructionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D7B5052616860E00115794 /* InstructionController.swift */; };
@@ -23,6 +24,7 @@
 /* Begin PBXFileReference section */
 		59774D30261CF6E600E434BF /* duke_health_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = duke_health_logo.png; sourceTree = "<group>"; };
 		6932BC5E261E0660006D51F8 /* sounds */ = {isa = PBXFileReference; lastKnownFileType = folder; path = sounds; sourceTree = "<group>"; };
+		693C761C262A06B300D59C46 /* blueorb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueorb.png; sourceTree = "<group>"; };
 		69D7B4FE2616860E00115794 /* auditorytesting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = auditorytesting.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		69D7B5012616860E00115794 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		69D7B5032616860E00115794 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 			isa = PBXGroup;
 			children = (
 				59774D30261CF6E600E434BF /* duke_health_logo.png */,
+				693C761C262A06B300D59C46 /* blueorb.png */,
 				69D7B5012616860E00115794 /* AppDelegate.swift */,
 				69D7B5032616860E00115794 /* SceneDelegate.swift */,
 				69D7B5052616860E00115794 /* InstructionController.swift */,
@@ -145,6 +148,7 @@
 				69D7B50B2616860F00115794 /* Assets.xcassets in Resources */,
 				69D7B5092616860E00115794 /* Main.storyboard in Resources */,
 				59774D31261CF6E600E434BF /* duke_health_logo.png in Resources */,
+				693C761D262A06B300D59C46 /* blueorb.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

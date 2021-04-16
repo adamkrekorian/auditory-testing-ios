@@ -9,10 +9,10 @@
 import UIKit
 import AVFoundation
 
-var seqPlayer:AVAudioPlayer?
-
 class sequenceViewController: UIViewController {
-    var queue = DispatchQueue(label: "home.queue", qos: DispatchQoS.default)
+    var seqPlayer:AVAudioPlayer?
+    
+    var queue = DispatchQueue(label: "seq.queue", qos: DispatchQoS.default)
     var item: DispatchWorkItem?
     
     var currentInd: Int = 0
@@ -34,7 +34,7 @@ class sequenceViewController: UIViewController {
     @IBAction func durationSliderUpdate(_ sender: UISlider) {
         
         durationVal = round(10*Float(sender.value))
-        durationLabel.text = "\(durationVal) seconds"
+        durationLabel.text = "\(Int(durationVal)) seconds"
     }
     
     
@@ -44,6 +44,12 @@ class sequenceViewController: UIViewController {
         delayVal = UInt32(round(10*Float(sender.value)))
         delayLabel.text = "\(delayVal) seconds"
     }
+    
+    
+    @IBOutlet weak var orb1: UIImageView!
+    @IBOutlet weak var orb2: UIImageView!
+    @IBOutlet weak var orb3: UIImageView!
+    @IBOutlet weak var orb4: UIImageView!
     
     
     func segmentToPan(_ seg: UISegmentedControl) -> Float {
@@ -87,6 +93,48 @@ class sequenceViewController: UIViewController {
 //            seqPlayer!.stop()}
     }
     
+    func showOrb(_ i: Int) {
+        switch i {
+        case 0:
+            self.orb1.isHidden = false
+            self.orb2.isHidden = true
+            self.orb3.isHidden = true
+            self.orb4.isHidden = true
+            break
+        case 1:
+            self.orb1.isHidden = true
+            self.orb2.isHidden = false
+            self.orb3.isHidden = true
+            self.orb4.isHidden = true
+            break
+        case 2:
+            self.orb1.isHidden = true
+            self.orb2.isHidden = true
+            self.orb3.isHidden = false
+            self.orb4.isHidden = true
+            break
+        case 3:
+            self.orb1.isHidden = true
+            self.orb2.isHidden = true
+            self.orb3.isHidden = true
+            self.orb4.isHidden = false
+            break
+        case 4:
+            self.orb1.isHidden = true
+            self.orb2.isHidden = true
+            self.orb3.isHidden = true
+            self.orb4.isHidden = true
+            break
+        default:
+            self.orb1.isHidden = true
+            self.orb2.isHidden = true
+            self.orb3.isHidden = true
+            self.orb4.isHidden = true
+            break
+        }
+    }
+    
+    
     @IBAction func playSequence(_ sender: UIButton) {
         let panVals = [self.segmentToPan(self.LR1),
                        self.segmentToPan(self.LR2),
@@ -99,9 +147,15 @@ class sequenceViewController: UIViewController {
             for i in 0...3 where self?.item?.isCancelled == false {
                 let semaphore = DispatchSemaphore(value: 0)
                 semaphore.signal()
+                DispatchQueue.main.async {
+                   self?.showOrb(i)
+                }
                 self?.playSoundSeq(panVal: panVals[i], duration: self?.durationVal ?? 5.0)
                 sleep(self?.delayVal ?? 5)
                 semaphore.wait()
+            }
+            DispatchQueue.main.async {
+                self?.showOrb(4)
             }
             self?.item = nil
         }
@@ -126,6 +180,11 @@ class sequenceViewController: UIViewController {
         } catch let error as NSError {
             print("error: \(error.localizedDescription)")
         }
+        
+        orb1.isHidden = true
+        orb2.isHidden = true
+        orb3.isHidden = true
+        orb4.isHidden = true
     }
     
 
@@ -133,6 +192,7 @@ class sequenceViewController: UIViewController {
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        seqPlayer!.stop()
         item?.cancel()
     }
 }
