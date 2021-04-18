@@ -11,15 +11,15 @@ import AVFoundation
 
 class audioViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, AVAudioPlayerDelegate, AVAudioRecorderDelegate {
     
-    let NUMBER_OF_PRELOADED_SOUNDS = 5
+    let NUMBER_OF_PRELOADED_SOUNDS = 6
     
     var player:AVAudioPlayer?
     
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
     
-    var soundNames: [String] = ["Bell Ringing", "Clapping", "Horn"]
-    var sounds: [String] = ["sounds/bell.mp3", "sounds/clap.mp3", "sounds/horn.wav"]
+    var soundNames: [String] = ["Bell Ringing", "Clapping", "Horn", "Birds Chirping","Car Engine", "Dog Barking"]
+    var sounds: [String] = ["sounds/bell.mp3", "sounds/clap.mp3", "sounds/horn.wav","sounds/birds.mp3","sounds/car_engine.wav","sounds/bark.wav"]
     
     @IBOutlet weak var leftButton: UIButton!
     @IBOutlet weak var rightButton: UIButton!
@@ -51,8 +51,8 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
         let tempPath = "\(sounds[selectRow!])"
         
         let url: URL?
-        if (selectRow! > 2) {
-            url = URL(string: tempPath)
+        if (selectRow! > NUMBER_OF_PRELOADED_SOUNDS) {
+            url = URL(fileURLWithPath: tempPath)
         } else {
             url = Bundle.main.url(forResource: tempPath, withExtension: nil)
         }
@@ -60,7 +60,8 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
             try AVAudioSession.sharedInstance().setActive(true)
-
+            try url?.checkResourceIsReachable()
+            
             player = try AVAudioPlayer(contentsOf: url!)
             player?.delegate = self
             player!.pan = panVal
