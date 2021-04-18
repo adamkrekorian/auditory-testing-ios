@@ -191,7 +191,7 @@ class sequenceViewController: UIViewController {
     // MARK: - Navigation
     
     override func viewWillDisappear(_ animated: Bool) {
-        if self.isMovingFromParent{
+        if self.isMovingFromParent && seqPlayer != nil {
             seqPlayer!.stop()
             item?.cancel()
         }
