@@ -39,8 +39,6 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
         if (flag == true) { cancelPlaying() }
     }
     
-    
-    
     func playSound(_ sender: Any, _ panVal: Float) {
         let selectRow = tableView.indexPathForSelectedRow?.row
         
@@ -51,8 +49,8 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
         let tempPath = "\(sounds[selectRow!])"
         
         let url: URL?
-        if (selectRow! > NUMBER_OF_PRELOADED_SOUNDS) {
-            url = URL(fileURLWithPath: tempPath)
+        if (selectRow! >= NUMBER_OF_PRELOADED_SOUNDS) {
+            url = URL(string: tempPath)
         } else {
             url = Bundle.main.url(forResource: tempPath, withExtension: nil)
         }
@@ -74,11 +72,6 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
     }
     
-    func stopSound(_ sender: Any){
-        player!.stop()
-        player = nil
-    }
-    
     func getDocumentsDirectory() -> URL {
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         return paths[0]
@@ -87,11 +80,13 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
 
     @IBAction func playLeft(_ sender: UIButton) {
         let panVal: Float = -1.0;
-        if player == nil {
+        if player == nil || sender.titleLabel?.text == "Play Left" {
             playSound(sender, panVal)
+            if (rightButton.titleLabel?.text == "Tap to Stop") {
+                rightButton.setTitle("Play Right", for: .normal)
+            }
         } else {
-            stopSound(sender);
-            leftButton.setTitle("Play Left", for: .normal)
+            cancelPlaying()
         }
     }
     
@@ -100,13 +95,14 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
         let panVal: Float = 1.0;
         if player == nil || sender.titleLabel?.text == "Play Right" {
             playSound(sender, panVal)
+            if (leftButton.titleLabel?.text == "Tap to Stop") {
+                leftButton.setTitle("Play Left", for: .normal)
+            }
         } else {
-            stopSound(sender)
-            rightButton.setTitle("Play Right", for: .normal)
+            cancelPlaying()
         }
     }
 
-  
     @IBAction func deleteSound(_ sender: Any) {
         let selectRow = tableView.indexPathForSelectedRow?.row
         if selectRow != nil && selectRow! >= NUMBER_OF_PRELOADED_SOUNDS {
