@@ -189,10 +189,11 @@ class sequenceViewController: UIViewController {
     
 
     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        seqPlayer!.stop()
-        item?.cancel()
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        if self.isMovingFromParent{
+            seqPlayer!.stop()
+            item?.cancel()
+        }
     }
 }
