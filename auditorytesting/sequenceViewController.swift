@@ -10,6 +10,8 @@ import UIKit
 import AVFoundation
 
 class sequenceViewController: UIViewController {
+    let NUMBER_OF_PRELOADED_SOUNDS = 6
+    
     var seqPlayer:AVAudioPlayer?
     
     var queue = DispatchQueue(label: "seq.queue", qos: DispatchQoS.default)
@@ -64,7 +66,7 @@ class sequenceViewController: UIViewController {
     }
     
     func prepareSoundSeq() {
-        if (currentInd > 2) {
+        if (currentInd >= NUMBER_OF_PRELOADED_SOUNDS) {
             url = URL(string: currentSoundPath)
         } else {
             url = Bundle.main.url(forResource: currentSoundPath, withExtension: nil)
