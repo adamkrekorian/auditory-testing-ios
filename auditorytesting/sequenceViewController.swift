@@ -198,4 +198,12 @@ class sequenceViewController: UIViewController {
             item?.cancel()
         }
     }
+    
+    override open var shouldAutorotate: Bool {
+       return false
+    }
+
+    override open var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+       return .portrait
+    }
 }

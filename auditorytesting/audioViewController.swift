@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 
-class audioViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, AVAudioPlayerDelegate, AVAudioRecorderDelegate {
+class audioViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, AVAudioPlayerDelegate, AVAudioRecorderDelegate, UITextFieldDelegate {
     
     let NUMBER_OF_PRELOADED_SOUNDS = 6
     
@@ -79,6 +79,7 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
     
 
     @IBAction func playLeft(_ sender: UIButton) {
+        if audioRecorder != nil { return }
         let panVal: Float = -1.0;
         if player == nil || sender.titleLabel?.text == "Play Left" {
             playSound(sender, panVal)
@@ -92,6 +93,7 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     
     @IBAction func playRight(_ sender: UIButton) {
+        if audioRecorder != nil { return }
         let panVal: Float = 1.0;
         if player == nil || sender.titleLabel?.text == "Play Right" {
             playSound(sender, panVal)
@@ -104,6 +106,7 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
 
     @IBAction func deleteSound(_ sender: Any) {
+        if audioRecorder != nil { return }
         let selectRow = tableView.indexPathForSelectedRow?.row
         if selectRow != nil && selectRow! >= NUMBER_OF_PRELOADED_SOUNDS {
             soundNames.remove(at: selectRow!)
@@ -151,33 +154,45 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     
-    @IBOutlet weak var soundNameInput: UITextField!
-    
     @IBAction func recordSound(_ sender: Any) {
         let audioFilename: String = soundNameInput.text!
+        let audioFilenameClean = audioFilename.replacingOccurrences(of: " ", with: "-")
         
-        if audioFilename == "" {
+        if audioFilenameClean == "" {
             let alert = UIAlertController(title: "No Recording Name", message: "Please name your recording.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
 
             self.present(alert, animated: true)
         }
-        else if soundNames.contains(audioFilename)  {
+        else if soundNames.contains(audioFilenameClean)  {
             let alert = UIAlertController(title: "Please rename sound", message: "You cannot have duplicate sound names", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
 
             self.present(alert, animated: true)
         }
         else {
-            let audioFilepath = getDocumentsDirectory().appendingPathComponent("\(audioFilename).m4a")
+            let audioFilepath = getDocumentsDirectory().appendingPathComponent("\(audioFilenameClean).m4a")
             if audioRecorder == nil {
-                    startRecording(sender, filename: audioFilename, filepath: audioFilepath)
+                    startRecording(sender, filename: audioFilenameClean, filepath: audioFilepath)
                 } else {
-                    finishRecording(success: true, sender: sender, filename: audioFilename, filepath: audioFilepath)
+                    finishRecording(success: true, sender: sender, filename: audioFilenameClean, filepath: audioFilepath)
                 }
         }
     }
-
+    
+    @IBOutlet weak var soundNameInput: UITextField!
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let currentText = soundNameInput.text ?? ""
+        guard let stringRange = Range(range, in: currentText) else { return false }
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+        return updatedText.count <= 18
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
+    }
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -186,7 +201,7 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
-        //self.navigationController?.isNavigationBarHidden = true
+        soundNameInput.delegate = self
         
         recordingSession = AVAudioSession.sharedInstance()
         
@@ -224,6 +239,7 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     @IBAction func goToSequence(_ sender: UIButton) {
+        if audioRecorder != nil { return }
         self.performSegue(withIdentifier: "segueSequence", sender: self)
         if player != nil {
             cancelPlaying()
@@ -231,6 +247,7 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     @IBAction func goToInstruction(_ sender: UIButton) {
+        if audioRecorder != nil { return }
         self.performSegue(withIdentifier: "segueInstruction", sender: self)
     }
     
@@ -257,6 +274,14 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+    }
+    
+    override open var shouldAutorotate: Bool {
+       return false
+    }
+
+    override open var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+       return .portrait
     }
 
 }
