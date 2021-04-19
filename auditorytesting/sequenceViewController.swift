@@ -169,7 +169,7 @@ class sequenceViewController: UIViewController {
         super.viewDidLoad()
         
         self.currentSound.text = currentSoundName
-        if (currentInd > 2) {
+        if (currentInd >= NUMBER_OF_PRELOADED_SOUNDS) {
             url = URL(string: currentSoundPath)
         } else {
             url = Bundle.main.url(forResource: currentSoundPath, withExtension: nil)
