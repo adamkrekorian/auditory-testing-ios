@@ -79,7 +79,7 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
     
 
     @IBAction func playLeft(_ sender: UIButton) {
-        if audioRecorder != nil { return }
+        if audioRecorder != nil { alertRecording() }
         let panVal: Float = -1.0;
         if player == nil || sender.titleLabel?.text == "Play Left" {
             playSound(sender, panVal)
@@ -93,7 +93,7 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     
     @IBAction func playRight(_ sender: UIButton) {
-        if audioRecorder != nil { return }
+        if audioRecorder != nil { alertRecording() }
         let panVal: Float = 1.0;
         if player == nil || sender.titleLabel?.text == "Play Right" {
             playSound(sender, panVal)
@@ -106,7 +106,7 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
 
     @IBAction func deleteSound(_ sender: Any) {
-        if audioRecorder != nil { return }
+        if audioRecorder != nil { alertRecording() }
         let selectRow = tableView.indexPathForSelectedRow?.row
         if selectRow != nil && selectRow! >= NUMBER_OF_PRELOADED_SOUNDS {
             soundNames.remove(at: selectRow!)
@@ -116,14 +116,17 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     func startRecording(_ sender: Any, filename: String, filepath: URL) {
-
         let settings = [
             AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
             AVSampleRateKey: 12000,
             AVNumberOfChannelsKey: 1,
             AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
-        ]
-
+            ]
+        
+        if player != nil {
+            cancelPlaying()
+        }
+        
         do {
             audioRecorder = try AVAudioRecorder(url: filepath, settings: settings)
             audioRecorder.delegate = self
@@ -132,6 +135,7 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
             print("File saved at \(filepath)")
             let button = sender as! UIButton
             button.setTitle("Tap to Stop", for: .normal)
+            button.backgroundColor = UIColor(red: 240/255, green: 10/255, blue: 15/255, alpha: 0.5)
         } catch {
             finishRecording(success: false, sender: sender, filename: filename, filepath: filepath)
         }
@@ -143,14 +147,21 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
         soundNames.append(filename)
         sounds.append(filepath.absoluteString)
         self.tableView.reloadData()
-        print(sounds)
         
         let button = sender as! UIButton
         if success {
             button.setTitle("Record", for: .normal)
+            button.backgroundColor = UIColor.systemGray4
         } else {
             button.setTitle("Try Again", for: .normal)
         }
+    }
+    
+    func alertRecording() {
+        let alert = UIAlertController(title: "Recording in Progress", message: "Please finish recording before playing back a sound.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
+        self.present(alert, animated: true)
+        return
     }
     
     
@@ -163,12 +174,14 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
             alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
 
             self.present(alert, animated: true)
+            return
         }
         else if soundNames.contains(audioFilenameClean)  {
             let alert = UIAlertController(title: "Please rename sound", message: "You cannot have duplicate sound names", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Dismiss", style: .cancel, handler: nil))
 
             self.present(alert, animated: true)
+            return
         }
         else {
             let audioFilepath = getDocumentsDirectory().appendingPathComponent("\(audioFilenameClean).m4a")
@@ -222,9 +235,6 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
         }
         
         soundNameInput.text = ""
-        
-        
-        // Do any additional setup after loading the view.
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -239,7 +249,7 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     @IBAction func goToSequence(_ sender: UIButton) {
-        if audioRecorder != nil { return }
+        if audioRecorder != nil { alertRecording() }
         self.performSegue(withIdentifier: "segueSequence", sender: self)
         if player != nil {
             cancelPlaying()
@@ -247,7 +257,7 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
     
     @IBAction func goToInstruction(_ sender: UIButton) {
-        if audioRecorder != nil { return }
+        if audioRecorder != nil { alertRecording() }
         self.performSegue(withIdentifier: "segueInstruction", sender: self)
     }
     
@@ -285,3 +295,15 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
     }
 
 }
+
+
+//extension Date
+//{
+//    func toString( dateFormat format  : String ) -> String
+//    {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = format
+//        return dateFormatter.string(from: self)
+//    }
+//}
+//            let audioFilepath = getDocumentsDirectory().appendingPathComponent("\(Date().toString(dateFormat: "dd-MM-YY_'at'_HH:mm:ss")).m4a")
