@@ -13,6 +13,7 @@ class sequenceViewController: UIViewController {
     let NUMBER_OF_PRELOADED_SOUNDS = 6
     
     var seqPlayer:AVAudioPlayer?
+    var playing: Bool = false
     
     var queue = DispatchQueue(label: "seq.queue", qos: DispatchQoS.default)
     var item: DispatchWorkItem?
@@ -138,31 +139,44 @@ class sequenceViewController: UIViewController {
     
     
     @IBAction func playSequence(_ sender: UIButton) {
-        let panVals = [self.segmentToPan(self.LR1),
-                       self.segmentToPan(self.LR2),
-                       self.segmentToPan(self.LR3),
-                       self.segmentToPan(self.LR4)]
-        
-        queue.async() { self.prepareSoundSeq() }
-        
-        item = DispatchWorkItem { [weak self] in
-            for i in 0...3 where self?.item?.isCancelled == false {
-                let semaphore = DispatchSemaphore(value: 0)
-                semaphore.signal()
-                DispatchQueue.main.async {
-                   self?.showOrb(i)
+        if (!playing) {
+            let panVals = [self.segmentToPan(self.LR1),
+                           self.segmentToPan(self.LR2),
+                           self.segmentToPan(self.LR3),
+                           self.segmentToPan(self.LR4)]
+            
+            queue.async() { self.prepareSoundSeq() }
+            
+            item = DispatchWorkItem { [weak self] in
+                for i in 0...3 where self?.item?.isCancelled == false {
+                    let semaphore = DispatchSemaphore(value: 0)
+                    semaphore.signal()
+                    DispatchQueue.main.async {
+                       self?.showOrb(i)
+                    }
+                    self?.playSoundSeq(panVal: panVals[i], duration: self?.durationVal ?? 5.0)
+                    sleep(self?.delayVal ?? 5)
+                    semaphore.wait()
                 }
-                self?.playSoundSeq(panVal: panVals[i], duration: self?.durationVal ?? 5.0)
-                sleep(self?.delayVal ?? 5)
-                semaphore.wait()
+                DispatchQueue.main.async {
+                    self?.showOrb(4)
+                }
+                self?.item = nil
             }
-            DispatchQueue.main.async {
-                self?.showOrb(4)
-            }
-            self?.item = nil
+            
+            let button = sender
+            button.setTitle("Tap to Stop", for: .normal)
+            playing = true
+            
+            queue.async(execute: item!)
         }
-
-        queue.async(execute: item!)
+        else {
+            let button = sender
+            button.setTitle("Play Sequence", for: .normal)
+            seqPlayer!.stop()
+            item?.cancel()
+            playing = false
+        }
     }
     
     override func viewDidLoad() {
