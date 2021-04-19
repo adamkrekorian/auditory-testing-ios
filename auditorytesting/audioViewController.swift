@@ -156,7 +156,7 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     @IBAction func recordSound(_ sender: Any) {
         let audioFilename: String = soundNameInput.text!
-        let audioFilenameClean = audioFilename.replacingOccurrences(of: " ", with: "-")
+        let audioFilenameClean = audioFilename.replacingOccurrences(of: " ", with: "_")
         
         if audioFilenameClean == "" {
             let alert = UIAlertController(title: "No Recording Name", message: "Please name your recording.", preferredStyle: .alert)
