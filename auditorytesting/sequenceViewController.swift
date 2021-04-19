@@ -167,6 +167,7 @@ class sequenceViewController: UIViewController {
             let button = sender
             button.setTitle("Tap to Stop", for: .normal)
             playing = true
+            
             queue.async(execute: item!)
         }
         else {
