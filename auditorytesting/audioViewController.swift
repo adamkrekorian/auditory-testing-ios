@@ -62,6 +62,7 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
             
             player = try AVAudioPlayer(contentsOf: url!)
             player?.delegate = self
+            player!.prepareToPlay()
             player!.pan = panVal
             player!.play()
             let button = sender as! UIButton
@@ -112,6 +113,26 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
             soundNames.remove(at: selectRow!)
             sounds.remove(at: selectRow!)
             self.tableView.reloadData()
+        }
+    }
+    
+    func prepareRecording() {
+        recordingSession = AVAudioSession.sharedInstance()
+        
+        do {
+            try recordingSession.setCategory(.playAndRecord, mode: .default)
+            try recordingSession.setActive(true)
+            recordingSession.requestRecordPermission() { [unowned self] allowed in
+                DispatchQueue.main.async {
+                    if allowed {
+                        print("ready to record!")
+                    } else {
+                        // failed to record!
+                    }
+                }
+            }
+        } catch let error as NSError {
+            print("error: \(error.localizedDescription)")
         }
     }
     
@@ -166,6 +187,10 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     
     @IBAction func recordSound(_ sender: Any) {
+        if player != nil {
+            cancelPlaying()
+        }
+        
         let audioFilename: String = soundNameInput.text!
         let audioFilenameClean = audioFilename.replacingOccurrences(of: " ", with: "_")
         
@@ -184,6 +209,7 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
             return
         }
         else {
+            prepareRecording()
             let audioFilepath = getDocumentsDirectory().appendingPathComponent("\(audioFilenameClean).m4a")
             if audioRecorder == nil {
                     startRecording(sender, filename: audioFilenameClean, filepath: audioFilepath)
@@ -215,24 +241,8 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
         tableView.delegate = self
         tableView.dataSource = self
         soundNameInput.delegate = self
+        prepareRecording()
         
-        recordingSession = AVAudioSession.sharedInstance()
-        
-        do {
-            try recordingSession.setCategory(.playAndRecord, mode: .default)
-            try recordingSession.setActive(true)
-            recordingSession.requestRecordPermission() { [unowned self] allowed in
-                DispatchQueue.main.async {
-                    if allowed {
-                        print("ready to record!")
-                    } else {
-                        // failed to record!
-                    }
-                }
-            }
-        } catch let error as NSError {
-            print("error: \(error.localizedDescription)")
-        }
         
         soundNameInput.text = ""
     }

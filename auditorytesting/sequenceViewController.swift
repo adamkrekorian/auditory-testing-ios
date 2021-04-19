@@ -160,12 +160,15 @@ class sequenceViewController: UIViewController {
                 }
                 DispatchQueue.main.async {
                     self?.showOrb(4)
+                    self?.playing = false
+                    let button = sender
+                    button.setTitle("Play Sequence", for: .normal)
                 }
                 self?.item = nil
             }
             
             let button = sender
-            button.setTitle("Tap to Stop", for: .normal)
+            button.setTitle("Tap to Pause", for: .normal)
             playing = true
             
             queue.async(execute: item!)
@@ -197,10 +200,9 @@ class sequenceViewController: UIViewController {
             print("error: \(error.localizedDescription)")
         }
         
-        orb1.isHidden = true
-        orb2.isHidden = true
-        orb3.isHidden = true
-        orb4.isHidden = true
+        prepareSoundSeq()
+        
+        showOrb(4)
     }
     
 
