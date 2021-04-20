@@ -160,6 +160,9 @@ class sequenceViewController: UIViewController {
                 }
                 DispatchQueue.main.async {
                     self?.showOrb(4)
+                    let button = sender
+                    button.setTitle("Play Sequence", for: .normal)
+                    self?.playing = false
                 }
                 self?.item = nil
             }
@@ -174,6 +177,7 @@ class sequenceViewController: UIViewController {
             let button = sender
             button.setTitle("Play Sequence", for: .normal)
             seqPlayer!.stop()
+            prepareSoundSeq()
             item?.cancel()
             playing = false
         }
