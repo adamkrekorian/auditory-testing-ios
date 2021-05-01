@@ -8,10 +8,12 @@
 
 import UIKit
 import AVFoundation
+import CoreData
 
 class audioViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, AVAudioPlayerDelegate, AVAudioRecorderDelegate, UITextFieldDelegate {
     
     let NUMBER_OF_PRELOADED_SOUNDS = 6
+    let defaults = UserDefaults.standard
     
     var player:AVAudioPlayer?
     
@@ -20,6 +22,9 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     var soundNames: [String] = ["Bell Ringing", "Clapping", "Horn", "Birds Chirping","Car Engine", "Dog Barking"]
     var sounds: [String] = ["sounds/bell.mp3", "sounds/clap.mp3", "sounds/horn.wav","sounds/birds.mp3","sounds/car_engine.wav","sounds/bark.wav"]
+    
+    var soundData: [NSManagedObject] = []
+    
     
     @IBOutlet weak var leftButton: UIButton!
     @IBOutlet weak var rightButton: UIButton!
@@ -113,6 +118,21 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
             soundNames.remove(at: selectRow!)
             sounds.remove(at: selectRow!)
             self.tableView.reloadData()
+            
+            guard let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate else {
+                return
+            }
+
+            let managedContext = appDelegate.persistentContainer.viewContext
+
+            managedContext.delete(soundData[selectRow! - NUMBER_OF_PRELOADED_SOUNDS])
+
+            do {
+                try managedContext.save()
+            } catch let error as NSError {
+                print("Could not delete. \(error), \(error.userInfo)")
+            }
         }
     }
     
@@ -165,6 +185,7 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
     func finishRecording(success: Bool, sender: Any, filename: String, filepath: URL) {
         audioRecorder.stop()
         audioRecorder = nil
+        save(name: filename, path: filepath.absoluteString)
         soundNames.append(filename)
         sounds.append(filepath.absoluteString)
         self.tableView.reloadData()
@@ -175,6 +196,32 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
             button.backgroundColor = UIColor.systemGray4
         } else {
             button.setTitle("Try Again", for: .normal)
+        }
+    }
+    
+    func save(name: String, path: String) {
+      
+        guard let appDelegate =
+        UIApplication.shared.delegate as? AppDelegate else {
+            return
+        }
+
+        let managedContext = appDelegate.persistentContainer.viewContext
+
+        let entity = NSEntityDescription.entity(forEntityName: "Sound",
+                                   in: managedContext)!
+
+        let sound = NSManagedObject(entity: entity,
+                                   insertInto: managedContext)
+
+        sound.setValue(name, forKeyPath: "name")
+        sound.setValue(path, forKeyPath: "path")
+
+        do {
+            try managedContext.save()
+            soundData.append(sound)
+        } catch let error as NSError {
+        print("Could not save. \(error), \(error.userInfo)")
         }
     }
     
@@ -247,6 +294,35 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
         soundNameInput.text = ""
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
+            else {
+                return
+            }
+
+        let managedContext = appDelegate.persistentContainer.viewContext
+
+        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Sound")
+
+        do {
+//            try managedContext.execute(NSBatchDeleteRequest(fetchRequest: fetchRequest as! NSFetchRequest<NSFetchRequestResult>))
+            soundData = try managedContext.fetch(fetchRequest)
+            if (soundData.count) <= 0 { return }
+            for sound in soundData {
+                print(soundData.count)
+                sounds.append(sound.value(forKeyPath: "path") as! String)
+                soundNames.append(sound.value(forKeyPath: "name") as! String)
+            }
+            
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
+        
+    
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sounds.count
     }
@@ -304,16 +380,23 @@ class audioViewController: UIViewController, UITableViewDataSource, UITableViewD
        return .portrait
     }
 
+    
+    func applicationWillTerminate(_ application: UIApplication) {
+        print("terminating")
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate
+            else {
+                return
+            }
+
+        let managedContext = appDelegate.persistentContainer.viewContext
+        do {
+            try managedContext.save()
+        } catch let error as NSError {
+            print("Could not fetch. \(error), \(error.userInfo)")
+        }
+        
+    }
+
 }
 
-
-//extension Date
-//{
-//    func toString( dateFormat format  : String ) -> String
-//    {
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = format
-//        return dateFormatter.string(from: self)
-//    }
-//}
-//            let audioFilepath = getDocumentsDirectory().appendingPathComponent("\(Date().toString(dateFormat: "dd-MM-YY_'at'_HH:mm:ss")).m4a")
+    
